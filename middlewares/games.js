@@ -35,4 +35,4 @@ const findGameById = async (req, res, next) => {
   }
 };
 
-module.exports = [findAllGames, createGame, findGameById];
+module.exports = {findAllGames, createGame, findGameById};

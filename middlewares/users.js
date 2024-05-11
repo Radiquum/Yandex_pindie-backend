@@ -30,4 +30,4 @@ const findUserById = async (req, res, next) => {
   }
 };
 
-module.exports = [findAllUsers, createUser, findUserById];
+module.exports = {findAllUsers, createUser, findUserById};

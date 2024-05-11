@@ -30,4 +30,4 @@ const findCategoryById = async (req, res, next) => {
   }
 };
 
-module.exports = [findAllCategories, createCategory, findCategoryById];
+module.exports = {findAllCategories, createCategory, findCategoryById};
