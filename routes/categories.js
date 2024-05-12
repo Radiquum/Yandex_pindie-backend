@@ -4,11 +4,13 @@ const {
   findAllCategories,
   createCategory,
   findCategoryById,
+  updateCategory,
 } = require("../middlewares/categories");
 const {
   sendAllCategories,
   sendCategoryCreated,
   sendCategoryById,
+  sendCategoryUpdated,
 } = require("../controllers/categories");
 
 categoriesRouter.get("/categories", findAllCategories, sendAllCategories);
@@ -18,6 +20,12 @@ categoriesRouter.post(
   findAllCategories,
   createCategory,
   sendCategoryCreated
+);
+categoriesRouter.put(
+  "/catagories/:id",
+  findCategoryById,
+  updateCategory,
+  sendCategoryUpdated
 );
 
 module.exports = categoriesRouter;
