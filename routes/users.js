@@ -16,6 +16,6 @@ const {
 usersRouter.get("/users", findAllUsers, sendAllUsers);
 usersRouter.get("/users/:id", findUserById, sendUserById);
 usersRouter.post("/users", findAllUsers, createUser, sendUserCreated);
-usersRouter.put("/users/:id", findUserById, updateUser, sendUserUpdated);
+usersRouter.put("/users/:id", updateUser, sendUserUpdated);
 
 module.exports = usersRouter;

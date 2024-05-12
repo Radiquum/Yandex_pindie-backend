@@ -16,6 +16,6 @@ const {
 gamesRouter.get("/games", findAllGames, sendAllGames);
 gamesRouter.get("/games/:id", findGameById, sendGameById);
 gamesRouter.post("/games", findAllGames, createGame, sendGameCreated);
-gamesRouter.put("/games/:id", findGameById, updateGame, sendGameUpdated);
+gamesRouter.put("/games/:id", updateGame, sendGameUpdated);
 
 module.exports = gamesRouter;

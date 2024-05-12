@@ -21,11 +21,6 @@ categoriesRouter.post(
   createCategory,
   sendCategoryCreated
 );
-categoriesRouter.put(
-  "/catagories/:id",
-  findCategoryById,
-  updateCategory,
-  sendCategoryUpdated
-);
+categoriesRouter.put("/catagories/:id", updateCategory, sendCategoryUpdated);
 
 module.exports = categoriesRouter;
