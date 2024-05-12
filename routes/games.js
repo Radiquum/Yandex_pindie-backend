@@ -6,6 +6,10 @@ const {
   findGameById,
   updateGame,
   deleteGame,
+  checkEmptyFields,
+  checkIfUsersAreSafe,
+  checkIfCategoriesAvaliable,
+  checkIsGameExists,
 } = require("../middlewares/games");
 const {
   sendAllGames,
@@ -17,8 +21,23 @@ const {
 
 gamesRouter.get("/games", findAllGames, sendAllGames);
 gamesRouter.get("/games/:id", findGameById, sendGameById);
-gamesRouter.post("/games", findAllGames, createGame, sendGameCreated);
-gamesRouter.put("/games/:id", updateGame, sendGameUpdated);
+gamesRouter.post(
+  "/games",
+  checkEmptyFields,
+  findAllGames,
+  checkIsGameExists,
+  createGame,
+  sendGameCreated
+);
+gamesRouter.put(
+  "/games/:id",
+  checkEmptyFields,
+  findGameById,
+  checkIfUsersAreSafe,
+  checkIfCategoriesAvaliable,
+  updateGame,
+  sendGameUpdated
+);
 gamesRouter.delete("/games/:id", deleteGame, sendGameDeleted);
 
 module.exports = gamesRouter;
