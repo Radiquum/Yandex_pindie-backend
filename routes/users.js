@@ -17,8 +17,10 @@ const {
   sendUserById,
   sendUserUpdated,
   sendUserDeleted,
+  sendMe,
 } = require("../controllers/users");
 
+usersRouter.get("/me", checkAuth, sendMe);
 usersRouter.get("/users", findAllUsers, sendAllUsers);
 usersRouter.get("/users/:id", findUserById, sendUserById);
 usersRouter.post(

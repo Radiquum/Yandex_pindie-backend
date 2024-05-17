@@ -2,9 +2,11 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const { corsMiddleware } = require("./middlewares/cors");
 const connectToDatabase = require("./database/connect");
 const apiRouter = require("./routes/apiRouter");
+const pagesRouter = require("./routes/pages");
 
 const PORT = 3000;
 const app = express();
@@ -13,9 +15,11 @@ connectToDatabase();
 
 app.use(
   corsMiddleware,
+  cookieParser(),
   bodyParser.json(),
-  express.static(path.join(__dirname, "public")),
-  apiRouter
+  pagesRouter,
+  apiRouter,
+  express.static(path.join(__dirname, "public"))
 );
 
 app.listen(PORT, () => {
