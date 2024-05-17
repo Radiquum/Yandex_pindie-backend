@@ -62,12 +62,17 @@ const checkIsGameExists = async (req, res, next) => {
 };
 
 const findAllGames = async (req, res, next) => {
-  req.gamesArray = await games
-    .find({})
-    .populate("categories")
-    .populate({ path: "users", select: "-password" });
-  // Выведем в терминал результат поиска
-  console.log(req.gamesArray);
+  if (req.query["categories.name"]) {
+    req.gamesArray = await games.findGameByCategory(
+      req.query["categories.name"]
+    );
+    next();
+    return;
+  }
+  req.gamesArray = await games.find({}).populate("categories").populate({
+    path: "users",
+    select: "-password", // Исключим данные о паролях пользователей
+  });
   next();
 };
 
