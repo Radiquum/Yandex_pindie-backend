@@ -100,6 +100,17 @@ const checkIsUserExists = async (req, res, next) => {
   }
 };
 
+const findAuthorizedUser = async (req, res, next) => {
+  console.log("GET /users/:id");
+  try {
+    req.user = await users.findById(req.user, { password: 0 });
+    next();
+  } catch (error) {
+    res.setHeader("Content-Type", "application/json");
+    res.status(404).send(JSON.stringify({ message: "Пользователь не найден" }));
+  }
+};
+
 module.exports = {
   findAllUsers,
   createUser,
@@ -110,4 +121,5 @@ module.exports = {
   checkEmptyNameAndEmail,
   checkIsUserExists,
   hashPassword,
+  findAuthorizedUser,
 };
