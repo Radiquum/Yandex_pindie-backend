@@ -1,3 +1,4 @@
+const game = require("../models/game");
 const users = require("../models/user");
 const bcrypt = require("bcryptjs");
 
@@ -111,6 +112,30 @@ const findAuthorizedUser = async (req, res, next) => {
   }
 };
 
+const getUserVotedGames = async (req, res, next) => {
+  let votedGames = 0;
+
+  for (let game_index = 0; game_index < req.gamesArray.length; game_index++) {
+    for (
+      let user_index = 0;
+      user_index < req.gamesArray[game_index].users.length;
+      user_index++
+    ) {
+      if (
+        req.gamesArray[game_index].users[user_index].email ===
+        req.user._doc.email
+      ) {
+        votedGames++;
+      }
+    }
+  }
+  req.user = {
+    ...req.user._doc,
+    games: votedGames,
+  };
+  next();
+};
+
 module.exports = {
   findAllUsers,
   createUser,
@@ -122,4 +147,5 @@ module.exports = {
   checkIsUserExists,
   hashPassword,
   findAuthorizedUser,
+  getUserVotedGames,
 };

@@ -1,5 +1,6 @@
 const usersRouter = require("express").Router();
 const { checkAuth } = require("../middlewares/auth.js");
+const { findAllGames } = require("../middlewares/games");
 const {
   findAllUsers,
   createUser,
@@ -11,6 +12,7 @@ const {
   checkIsUserExists,
   hashPassword,
   findAuthorizedUser,
+  getUserVotedGames,
 } = require("../middlewares/users");
 const {
   sendAllUsers,
@@ -21,7 +23,14 @@ const {
   sendMe,
 } = require("../controllers/users");
 
-usersRouter.get("/me", checkAuth, findAuthorizedUser, sendMe);
+usersRouter.get(
+  "/me",
+  checkAuth,
+  findAuthorizedUser,
+  findAllGames,
+  getUserVotedGames,
+  sendMe
+);
 usersRouter.get("/users", findAllUsers, sendAllUsers);
 usersRouter.get("/users/:id", findUserById, sendUserById);
 usersRouter.post(
