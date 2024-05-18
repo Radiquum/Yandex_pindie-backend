@@ -1,6 +1,7 @@
 const gamesRouter = require("express").Router();
 const { checkAuth } = require("../middlewares/auth.js");
 const {
+  checkIsVoteRequest,
   findAllGames,
   createGame,
   findGameById,
@@ -33,6 +34,7 @@ gamesRouter.post(
 gamesRouter.put(
   "/games/:id",
   checkAuth,
+  checkIsVoteRequest,
   checkEmptyFields,
   findGameById,
   checkIfUsersAreSafe,
