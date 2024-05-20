@@ -25,4 +25,11 @@ const checkCookiesJWT = (req, res, next) => {
   next();
 };
 
-module.exports = { checkAuth, checkCookiesJWT };
+const checkUserRole = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).send({ message: "Недостаточно прав" });
+  }
+  next();
+};
+
+module.exports = { checkAuth, checkCookiesJWT, checkUserRole };
