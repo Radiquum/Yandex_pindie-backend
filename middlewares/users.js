@@ -1,7 +1,20 @@
+const game = require("../models/game");
 const users = require("../models/user");
+const bcrypt = require("bcryptjs");
+
+const hashPassword = async (req, res, next) => {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hash;
+    next();
+  } catch (error) {
+    res.status(400).send({ message: "Ошибка хеширования пароля" });
+  }
+};
 
 const findAllUsers = async (req, res, next) => {
-  req.usersArray = await users.find({});
+  req.usersArray = await users.find({}, { password: 0 });
   next();
 };
 
@@ -22,7 +35,7 @@ const createUser = async (req, res, next) => {
 const findUserById = async (req, res, next) => {
   console.log("GET /users/:id");
   try {
-    req.user = await users.findById(req.params.id);
+    req.user = await users.findById(req.params.id, { password: 0 });
     next();
   } catch (error) {
     res.setHeader("Content-Type", "application/json");
@@ -55,7 +68,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 const checkEmptyNameAndEmailAndPassword = async (req, res, next) => {
-  if (!req.body.name || !req.body.email || !req.body.password) {
+  if (!req.body.username || !req.body.email || !req.body.password) {
     res.setHeader("Content-Type", "application/json");
     res.status(400).send(JSON.stringify({ message: "Заполни все поля" }));
   } else {
@@ -88,6 +101,41 @@ const checkIsUserExists = async (req, res, next) => {
   }
 };
 
+const findAuthorizedUser = async (req, res, next) => {
+  console.log("GET /users/:id");
+  try {
+    req.user = await users.findById(req.user, { password: 0 });
+    next();
+  } catch (error) {
+    res.setHeader("Content-Type", "application/json");
+    res.status(404).send(JSON.stringify({ message: "Пользователь не найден" }));
+  }
+};
+
+const getUserVotedGames = async (req, res, next) => {
+  let votedGames = 0;
+
+  for (let game_index = 0; game_index < req.gamesArray.length; game_index++) {
+    for (
+      let user_index = 0;
+      user_index < req.gamesArray[game_index].users.length;
+      user_index++
+    ) {
+      if (
+        req.gamesArray[game_index].users[user_index].email ===
+        req.user._doc.email
+      ) {
+        votedGames++;
+      }
+    }
+  }
+  req.user = {
+    ...req.user._doc,
+    games: votedGames,
+  };
+  next();
+};
+
 module.exports = {
   findAllUsers,
   createUser,
@@ -97,4 +145,7 @@ module.exports = {
   checkEmptyNameAndEmailAndPassword,
   checkEmptyNameAndEmail,
   checkIsUserExists,
+  hashPassword,
+  findAuthorizedUser,
+  getUserVotedGames,
 };
