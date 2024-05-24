@@ -101,15 +101,26 @@ const checkIsUserExists = async (req, res, next) => {
   }
 };
 
-const checkIsUsernameUnique = async (req, res, next) => {
+const checkIsUsernameAndEmailUnique = async (req, res, next) => {
   const isInArray = req.usersArray.find((user) => {
-    return req.body.username === user.username;
+    let username_unique = req.body.username === user.username;
+    let email_unique = req.body.email === user.email;
+
+    if (req.user.username === user.username) {
+      username_unique = false;
+    }
+    if (req.user.email === user.email) {
+      email_unique = false;
+    }
+
+    return username_unique || email_unique;
   });
+
   if (isInArray) {
     res.setHeader("Content-Type", "application/json");
     res.status(400).send(
       JSON.stringify({
-        message: "Пользователь с таким именем уже существует",
+        message: "Имя или почта пользователя не уникальны.",
       })
     );
   } else {
@@ -164,5 +175,5 @@ module.exports = {
   hashPassword,
   findAuthorizedUser,
   getUserVotedGames,
-  checkIsUsernameUnique,
+  checkIsUsernameAndEmailUnique,
 };
