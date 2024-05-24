@@ -77,7 +77,7 @@ const checkEmptyNameAndEmailAndPassword = async (req, res, next) => {
 };
 
 const checkEmptyNameAndEmail = async (req, res, next) => {
-  if (!req.body.name || !req.body.email) {
+  if (!req.body.username || !req.body.email) {
     res.setHeader("Content-Type", "application/json");
     res.status(400).send(JSON.stringify({ message: "Заполни все поля" }));
   } else {
@@ -94,6 +94,22 @@ const checkIsUserExists = async (req, res, next) => {
     res.status(400).send(
       JSON.stringify({
         message: "Пользователь с таким email уже существует",
+      })
+    );
+  } else {
+    next();
+  }
+};
+
+const checkIsUsernameUnique = async (req, res, next) => {
+  const isInArray = req.usersArray.find((user) => {
+    return req.body.username === user.username;
+  });
+  if (isInArray) {
+    res.setHeader("Content-Type", "application/json");
+    res.status(400).send(
+      JSON.stringify({
+        message: "Пользователь с таким именем уже существует",
       })
     );
   } else {
@@ -148,4 +164,5 @@ module.exports = {
   hashPassword,
   findAuthorizedUser,
   getUserVotedGames,
+  checkIsUsernameUnique,
 };

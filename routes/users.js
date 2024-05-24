@@ -13,6 +13,7 @@ const {
   hashPassword,
   findAuthorizedUser,
   getUserVotedGames,
+  checkIsUsernameUnique,
 } = require("../middlewares/users");
 const {
   sendAllUsers,
@@ -38,6 +39,7 @@ usersRouter.post(
   checkEmptyNameAndEmailAndPassword,
   findAllUsers,
   checkIsUserExists,
+  checkIsUsernameUnique,
   hashPassword,
   createUser,
   sendUserCreated
@@ -45,9 +47,9 @@ usersRouter.post(
 usersRouter.put(
   "/users/:id",
   checkEmptyNameAndEmail,
-  checkAuth,
   findAllUsers,
-  checkIsUserExists,
+  checkIsUsernameUnique,
+  checkAuth,
   updateUser,
   sendUserUpdated
 );
