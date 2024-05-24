@@ -7,6 +7,7 @@ const allowedCors = [
   "http://localhost:3001",
   "localhost:27017",
   "https://api.yandex-pindie.nomoredomainswork.ru",
+  "https://yandex-pindie.nomoredomainswork.ru",
 ];
 
 function corsMiddleware(req, res, next) {
