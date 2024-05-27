@@ -14,6 +14,7 @@ const {
   findAuthorizedUser,
   getUserVotedGames,
   checkIsUsernameAndEmailUnique,
+  checkIsUsernameUnique,
 } = require("../middlewares/users");
 const {
   sendAllUsers,
